@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Искандар Джумаев](https://up.htmlacademy.ru/javascript/23/user/1675097).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров](https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
