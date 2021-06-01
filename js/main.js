@@ -10,11 +10,11 @@ function getRandomInt(min, max) {
 console.log(getRandomInt (45, 8));
 
 function getRandomFloat(min, max, float) {
-  if (max <= min) {
-    return false;
-  }
+ 
+  if (min < 0 || min >= max)  {
+    throw new RangeError('Параметр должен быть между ' + Min + ' и ' + Max);
+  } 
+  return Number((Math.random() * (max - min + 1) + min).toFixed(float)); 
+  }  
 
-  return  Math.random().toFixed(float) * (max - min + 1) + min;
-}
-
-console.log(getRandomFloat (5, 8, 3));
+console.log(getRandomFloat(1, 55, 1));
