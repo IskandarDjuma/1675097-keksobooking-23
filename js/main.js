@@ -1,47 +1,27 @@
-// // Функция, возвращающая случайное число в диапазоне
-// function getRandomInt(min, max) {
-//   if (min < 0 || min >= max)  {
-//     throw new RangeError('Параметр должен быть между ' + Min + ' и ' + Max);
-//   }
+const USERS_COUNT = 10;
 
-//   return  Math.floor(Math.random() * (max - min + 1)) + min;
-// }
+const MIN_PRICE = 1000;
+const MAX_PRICE = 1000000;
 
-// console.log(getRandomInt (45, 8));
+const MIN_ROOMS = 1;
+const MAX_ROOMS = 5;
 
-// function getRandomFloat(min, max, float) {
+const MIN_GUEST = 1;
+const MAX_GUEST = 20;
 
-//   if (min < 0 || min >= max)  {
-//     throw new RangeError('Параметр должен быть между ' + Min + ' и ' + Max);
-//   }
-//   return Number((Math.random() * (max - min + 1) + min).toFixed(float));
-//   }
+const MIN_AXIS_X = 35.65000;
+const MAX_AXIS_X = 35.70000;
 
-// console.log(getRandomFloat(1, 55, 1));
+const MIN_AXIS_Y = 139.70000;
+const MAX_AXIS_Y = 139.80000;
 
-function getRandomPositiveFloat (a, b, digits = 1) {
-  const lower = Math.min(Math.abs(a), Math.abs(b));
-  const upper = Math.max(Math.abs(a), Math.abs(b));
-  const result = Math.random() * (upper - lower) + lower;
-  return Number(result.toFixed(digits));
-}
+const SIMILAR_ADS_COUNT = 10;
 
-function getRandomPositiveInteger (a, b) {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const AVATAR = [
-  "img/avatars/user01.png",
-  "img/avatars/user02.png",
-  "img/avatars/user03.png",
-  "img/avatars/user04.png",
-  "img/avatars/user05.png",
-  "img/avatars/user06.png",
-  "img/avatars/user07.png",
-  "img/avatars/user08.png"
+const TITLE = [
+  "Уютная квартира в центре Рима",
+  "Роскошный дом у моря",
+  "Атмосферный лофт",
+  "Комната в коммунальной квартире"
 ]
 
 const TYPE = [
@@ -58,7 +38,7 @@ const CHECK_TIME = [
   "14:00"
 ]
 
-const FEATCHERS = [
+const FEATURES = [
   "wifi",
   "dishwasher",
   "parking",
@@ -67,48 +47,97 @@ const FEATCHERS = [
   "conditioner"
 ]
 
+const DESCRIPTION = [
+  "Снять комнату в Риме с ванной комнатой в центре посуточно, двухместная кровать",
+  "Дом не далеко от пляжа",
+  "Квартира в центре города, без воды"
+]
+
 const PHOTOS = [
   "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg",
   "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg",
   "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg"
 ]
 
+const getRandomPositiveFloat = (a, b, digits = 1) => {
+  const lower = Math.min(Math.abs(a), Math.abs(b));
+  const upper = Math.max(Math.abs(a), Math.abs(b));
+  const result = Math.random() * (upper - lower) + lower;
 
+  return Number(result.toFixed(digits));
+}
 
-// const getRandomArray = (array) => {
-  // Так и не смог создать массив случайной длины из значений:
-// }
+const getRandomPositiveInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-// Функция по получению случайного элемента массива
+  return Math.floor(result);
+};
+
+const generateAvatars = () => {
+  let avatarList = [];
+
+  for (var i = 1; i < USERS_COUNT + 1; i++) {
+    if (i < 10) {
+      i = '0' + i;
+    }
+    let avatars = 'img/avatars/user' + i + '.png';
+    avatarList.push(avatars);
+  }
+  return avatarList;
+}
+
 const getRandomArrayElement = (elements) => {
   return elements[getRandomPositiveInteger(0, elements.length -1)];
 }
 
-const createAuthor = () => {
-  return {
-    avatar : getRandomArrayElement(AVATAR)
-  }
-}
-console.log(createAuthor());
+const getShuffleArray = (arr) => {
+	let result = [];
 
-const createOffer = () => {
-  return {
-    title: "Уютная квартира в центре Рима",
-    price: getRandomPositiveInteger(1000, 100000),
-    type: getRandomArrayElement(TYPE),
-    guests: getRandomPositiveInteger(1, 30),
-    checkin: getRandomArrayElement(CHECK_TIME),
-    checkout: getRandomArrayElement(CHECK_TIME),
-    featchers: getRandomArray (FEATCHERS),
-    description: "Снять комнату в Риме с ванной комнатой в центре посуточно, двухместная кровать",
-  }
-}
-console.log(createOffer());
+	while (arr.length > 0) {
+		let random = getRandomPositiveInteger(0, arr.length - 1);
+		let elem = arr.splice(random, 1)[0];
+		result.push(elem);
+	}
 
-const createLocation = () => {
+	return result;
+}
+
+function shuffleArray(array) {
+  var mixedArray = array.slice();
+  for (var i = mixedArray.length - 1; i > 0; i--) {
+    var randomIndex = Math.floor(Math.random() * (i + 1));
+    var tempValue = mixedArray[i];
+    mixedArray[i] = mixedArray[randomIndex];
+    mixedArray[randomIndex] = tempValue;
+  }
+  return mixedArray;
+}
+
+const generateAds = () => {
   return {
-    lat: getRandomPositiveFloat (35.65000, 35.70000, digits = 5),
-    lng: getRandomPositiveFloat (139.70000, 139.80000, digits = 5),
+    author: {
+      avatar: generateAvatars()
+    },
+    offer : {
+      title: getRandomArrayElement(TITLE),
+      price: getRandomPositiveInteger(MIN_PRICE, MAX_PRICE),
+      type: getRandomArrayElement(TYPE),
+      guests: getRandomPositiveInteger(MIN_GUEST, MAX_GUEST),
+      checkin: getRandomArrayElement(CHECK_TIME),
+      checkout: getRandomArrayElement(CHECK_TIME),
+      features: getShuffleArray(FEATURES),
+      photos: getShuffleArray(PHOTOS),
+      description: getRandomArrayElement(DESCRIPTION),
+    },
+    location : {
+      lat: getRandomPositiveFloat (MIN_AXIS_X, MAX_AXIS_X, 5),
+      lng: getRandomPositiveFloat (MIN_AXIS_Y, MAX_AXIS_Y, 5),
+    }
   }
 }
-console.log(createLocation());
+
+const similarAds = new Array(SIMILAR_ADS_COUNT).fill(null).map(() => generateAds());
+console.log(similarAds)
+
