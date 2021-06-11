@@ -1,5 +1,3 @@
-const USERS_COUNT = 10;
-
 const MIN_PRICE = 1000;
 const MAX_PRICE = 1000000;
 
@@ -14,50 +12,51 @@ const MAX_AXIS_X = 35.70000;
 
 const MIN_AXIS_Y = 139.70000;
 const MAX_AXIS_Y = 139.80000;
+const AXIS_FLOAT = 5;
 
-const SIMILAR_ADS_COUNT = 10;
+const ADS_COUNT = 10;
 
-const TITLE = [
-  "Уютная квартира в центре Рима",
-  "Роскошный дом у моря",
-  "Атмосферный лофт",
-  "Комната в коммунальной квартире"
-]
+const TITLES = [
+  'Уютная квартира в центре Рима',
+  'Роскошный дом у моря',
+  'Атмосферный лофт',
+  'Комната в коммунальной квартире',
+];
 
-const TYPE = [
-  "palace",
-  "flat",
-  "house",
-  "bungalow",
-  "hotel"
-]
+const TYPES = [
+  'palace',
+  'flat',
+  'house',
+  'bungalow',
+  'hotel',
+];
 
 const CHECK_TIME = [
-  "12:00",
-  "13:00",
-  "14:00"
-]
+  '12:00',
+  '13:00',
+  '14:00',
+];
 
 const FEATURES = [
-  "wifi",
-  "dishwasher",
-  "parking",
-  "washer",
-  "elevator",
-  "conditioner"
-]
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner',
+];
 
-const DESCRIPTION = [
-  "Снять комнату в Риме с ванной комнатой в центре посуточно, двухместная кровать",
-  "Дом не далеко от пляжа",
-  "Квартира в центре города, без воды"
-]
+const DESCRIPTIONS = [
+  'Снять комнату в Риме с ванной комнатой в центре посуточно, двухместная кровать',
+  'Дом не далеко от пляжа',
+  'Квартира в центре города, без воды',
+];
 
 const PHOTOS = [
-  "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg",
-  "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg",
-  "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg"
-]
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
 
 const getRandomPositiveFloat = (a, b, digits = 1) => {
   const lower = Math.min(Math.abs(a), Math.abs(b));
@@ -65,7 +64,7 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
   const result = Math.random() * (upper - lower) + lower;
 
   return Number(result.toFixed(digits));
-}
+};
 
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
@@ -75,69 +74,58 @@ const getRandomPositiveInteger = (a, b) => {
   return Math.floor(result);
 };
 
-const generateAvatars = () => {
-  let avatarList = [];
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length -1)];
 
-  for (var i = 1; i < USERS_COUNT + 1; i++) {
-    if (i < 10) {
-      i = '0' + i;
-    }
-    let avatars = 'img/avatars/user' + i + '.png';
-    avatarList.push(avatars);
-  }
-  return avatarList;
-}
-
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomPositiveInteger(0, elements.length -1)];
-}
-
-const getShuffleArray = (arr) => {
-	let result = [];
-
-	while (arr.length > 0) {
-		let random = getRandomPositiveInteger(0, arr.length - 1);
-		let elem = arr.splice(random, 1)[0];
-		result.push(elem);
-	}
-
-	return result;
-}
-
-function shuffleArray(array) {
-  var mixedArray = array.slice();
-  for (var i = mixedArray.length - 1; i > 0; i--) {
-    var randomIndex = Math.floor(Math.random() * (i + 1));
-    var tempValue = mixedArray[i];
+const shuffleArray = (array) => {
+  const mixedArray = array.slice();
+  for (let i = mixedArray.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    const tempValue = mixedArray[i];
     mixedArray[i] = mixedArray[randomIndex];
     mixedArray[randomIndex] = tempValue;
   }
   return mixedArray;
-}
+};
 
-const generateAds = () => {
+const getRandomArray = (arr) => {
+  const shuffledArray = shuffleArray(arr);
+  const random = getRandomPositiveInteger(0, arr.length -1);
+
+  return shuffledArray.slice(0, random);
+
+};
+
+const generateAds = (index) => {
+  const locationLat = getRandomPositiveFloat (MIN_AXIS_X, MAX_AXIS_X, AXIS_FLOAT);
+  const locationLng= getRandomPositiveFloat (MIN_AXIS_Y, MAX_AXIS_Y, AXIS_FLOAT);
+
   return {
     author: {
-      avatar: generateAvatars()
+      avatar: `img/avatars/user${index < 10 ? `0${index}` : index}.png`,
     },
     offer : {
-      title: getRandomArrayElement(TITLE),
+      title: getRandomArrayElement(TITLES),
+      address: {
+        lat: locationLat,
+        lng: locationLng,
+      },
       price: getRandomPositiveInteger(MIN_PRICE, MAX_PRICE),
-      type: getRandomArrayElement(TYPE),
+      type: getRandomArrayElement(TYPES),
+      rooms: getRandomPositiveInteger(MIN_ROOMS, MAX_ROOMS),
       guests: getRandomPositiveInteger(MIN_GUEST, MAX_GUEST),
       checkin: getRandomArrayElement(CHECK_TIME),
       checkout: getRandomArrayElement(CHECK_TIME),
-      features: getShuffleArray(FEATURES),
-      photos: getShuffleArray(PHOTOS),
-      description: getRandomArrayElement(DESCRIPTION),
+      features: getRandomArray(FEATURES),
+      photos: getRandomArray(PHOTOS),
+      description: getRandomArrayElement(DESCRIPTIONS),
     },
     location : {
-      lat: getRandomPositiveFloat (MIN_AXIS_X, MAX_AXIS_X, 5),
-      lng: getRandomPositiveFloat (MIN_AXIS_Y, MAX_AXIS_Y, 5),
-    }
-  }
-}
+      lat: locationLat,
+      lng: locationLng,
+    },
+  };
+};
 
-const similarAds = new Array(SIMILAR_ADS_COUNT).fill(null).map(() => generateAds());
-console.log(similarAds)
+const similarAds = new Array(ADS_COUNT).fill(null).map((index) => generateAds(index));
 
+similarAds();
