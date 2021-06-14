@@ -17,8 +17,6 @@ const MIN_AXIS_Y = 139.70000;
 const MAX_AXIS_Y = 139.80000;
 const AXIS_FLOAT = 5;
 
-const ADS_COUNT = 10;
-
 const TITLES = [
   'Уютная квартира в центре Рима',
   'Роскошный дом у моря',
@@ -61,7 +59,7 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const generateAds = (index) => {
+const generateAd = (index) => {
   const locationLat = getRandomPositiveFloat (MIN_AXIS_X, MAX_AXIS_X, AXIS_FLOAT);
   const locationLng= getRandomPositiveFloat (MIN_AXIS_Y, MAX_AXIS_Y, AXIS_FLOAT);
 
@@ -92,4 +90,6 @@ const generateAds = (index) => {
   };
 };
 
-export {generateAds, ADS_COUNT};
+const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index));
+
+export {getArrayAds};
