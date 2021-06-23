@@ -1,4 +1,3 @@
-
 import {getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrayElement, getRandomArray} from './util.js';
 
 const MIN_PRICE = 1000;
@@ -31,6 +30,14 @@ const TYPES = [
   'bungalow',
   'hotel',
 ];
+
+const TYPES_TRANSLATE = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало ',
+  house: 'Дом ',
+  palace: 'Дворец ',
+  hotel: 'Отель',
+};
 
 const CHECK_TIME = [
   '12:00',
@@ -92,4 +99,4 @@ const generateAd = (index) => {
 
 const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index));
 
-export {getArrayAds};
+export {getArrayAds, TYPES_TRANSLATE};

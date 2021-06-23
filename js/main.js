@@ -1,5 +1,11 @@
 import {getArrayAds} from './data.js';
+import {getAdsOffer} from '/card.js';
 
-const ADS_COUNT = 10;
+const ADS_COUNT = 1;
 
-getArrayAds(ADS_COUNT);
+const similarOffer = document.querySelector('#map-canvas');
+
+getAdsOffer(getArrayAds(ADS_COUNT));
+similarOffer.appendChild(getAdsOffer(getArrayAds));
+
+
