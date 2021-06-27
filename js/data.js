@@ -33,9 +33,9 @@ const TYPES = [
 
 const TYPES_TRANSLATE = {
   flat: 'Квартира',
-  bungalow: 'Бунгало ',
-  house: 'Дом ',
-  palace: 'Дворец ',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
   hotel: 'Отель',
 };
 
@@ -76,10 +76,7 @@ const generateAd = (index) => {
     },
     offer : {
       title: getRandomArrayElement(TITLES),
-      address: {
-        lat: locationLat,
-        lng: locationLng,
-      },
+      address: `${locationLat}, ${locationLng}`,
       price: getRandomPositiveInteger(MIN_PRICE, MAX_PRICE),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomPositiveInteger(MIN_ROOMS, MAX_ROOMS),
@@ -97,6 +94,6 @@ const generateAd = (index) => {
   };
 };
 
-const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index));
+const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index + 1));
 
 export {getArrayAds, TYPES_TRANSLATE};
