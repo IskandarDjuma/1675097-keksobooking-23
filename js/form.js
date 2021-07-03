@@ -1,20 +1,24 @@
 const adForm = document.querySelector('.ad-form');
-const filterAndNoticeFields = document.querySelectorAll('.map__features, select, fieldset');
+const mapFeatures = document.querySelector('.map__features');
+const filterAndNoticeFields = document.querySelectorAll('select, fieldset');
 
-const deactivateForm = () => {
-  adForm.classList.add('ad-form--disabled');
-};
-
-const activateForm = () => {
-  adForm.classList.remove('ad-form--disabled');
-};
-
-const deactivateFields = (value) => {
+const toggleFields = (value) => {
   filterAndNoticeFields.forEach((item) => {
     item.disabled = value;
   });
 };
 
-deactivateFields(true);
-deactivateForm();
-activateForm();
+const deactivatePage = () => {
+  adForm.classList.add('ad-form--disabled');
+  mapFeatures.classList.add('ad-form--disabled');
+  toggleFields(true);
+};
+
+const activatePage = () => {
+  adForm.classList.remove('ad-form--disabled');
+  mapFeatures.classList.remove('ad-form--disabled');
+  toggleFields(false);
+};
+
+deactivatePage();
+activatePage();
