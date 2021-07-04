@@ -59,6 +59,6 @@ const renderOffer = ({author, offer}) => {
 
 };
 
-export {renderOffer};
+export {renderOffer, declOfNum};
 
 
