@@ -1,5 +1,6 @@
 import {getArrayAds} from './data.js';
 import {renderOffer} from './card.js';
+import './form.js';
 
 const ADS_AMOUNT = 1;
 
