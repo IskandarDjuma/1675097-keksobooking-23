@@ -1,4 +1,4 @@
-import {getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrayElement, getRandomArray} from './util.js';
+import { getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrayElement, getRandomArray } from './util.js';
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 1000000;
@@ -96,4 +96,4 @@ const generateAd = (index) => {
 
 const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index + 1));
 
-export {getArrayAds, TYPES_TRANSLATE};
+export { getArrayAds, TYPES_TRANSLATE };
