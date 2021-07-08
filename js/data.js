@@ -31,12 +31,27 @@ const TYPES = [
   'hotel',
 ];
 
-const TYPES_TRANSLATE = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
+const HOUSING_TYPES = {
+  bungalow: {
+    name : 'Бунгало',
+    minPrice : 0,
+  },
+  flat: {
+    name : 'Квартира',
+    minPrice: 1000,
+  },
+  hotel: {
+    name : 'Отель',
+    minPrice : 3000,
+  },
+  house: {
+    name : 'Дом',
+    minPrice : 5000,
+  },
+  palace: {
+    name : 'Дворец',
+    minPrice : 10000,
+  },
 };
 
 const CHECK_TIME = [
@@ -96,4 +111,4 @@ const generateAd = (index) => {
 
 const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index + 1));
 
-export { getArrayAds, TYPES_TRANSLATE };
+export { getArrayAds, HOUSING_TYPES };
