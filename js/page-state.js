@@ -1,6 +1,7 @@
 const adForm = document.querySelector('.ad-form');
-const mapFeatures = document.querySelector('.map__features');
+const mapFilters = document.querySelector('.map__filters');
 const filterAndNoticeFields = document.querySelectorAll('select, fieldset');
+
 
 const toggleFields = (value) => {
   filterAndNoticeFields.forEach((item) => {
@@ -10,15 +11,14 @@ const toggleFields = (value) => {
 
 const deactivatePage = () => {
   adForm.classList.add('ad-form--disabled');
-  mapFeatures.classList.add('ad-form--disabled');
+  mapFilters.classList.add('ad-form--disabled');
   toggleFields(true);
 };
 
 const activatePage = () => {
   adForm.classList.remove('ad-form--disabled');
-  mapFeatures.classList.remove('ad-form--disabled');
+  mapFilters.classList.remove('ad-form--disabled');
   toggleFields(false);
 };
 
-deactivatePage();
-activatePage();
+export { activatePage, deactivatePage };
