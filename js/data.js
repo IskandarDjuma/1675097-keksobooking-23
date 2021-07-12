@@ -111,4 +111,4 @@ const generateAd = (index) => {
 
 const getArrayAds = (count) => new Array(count).fill(null).map((item, index) => generateAd(index + 1));
 
-export { getArrayAds, HOUSING_TYPES };
+export { getArrayAds, HOUSING_TYPES, generateAd };

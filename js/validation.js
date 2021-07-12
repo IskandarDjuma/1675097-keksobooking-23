@@ -48,7 +48,7 @@ const onPriceChange = (evt) => {
 
 const checkPlaceValidity = () => {
   const roomGuests = roomGuestRation[roomNumberSelect.value];
-  const message = roomGuests.indexOf(+capacitySelect.value) === -1 ? 'Количество гостей больше чем комнат' : '';
+  const message = !roomGuests.includes(+capacitySelect.value) ? 'Количество гостей больше чем комнат' : '';
   capacitySelect.setCustomValidity(message);
 };
 
