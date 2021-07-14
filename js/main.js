@@ -6,8 +6,6 @@ import './map.js';
 
 // const ADS_AMOUNT = 1;
 
-// const map = document.querySelector('#map-canvas');
-
 // activatePage();
 setFormListeners();
 // const ads = getArrayAds(ADS_AMOUNT);
