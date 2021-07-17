@@ -1,7 +1,7 @@
 import { activatePage } from './page-state.js';
 import { renderOffer } from './card.js';
-import { getArrayAds } from './data.js';
 
+const resetButton = document.querySelector('.ad-form__reset');
 
 const TokyoCoords = {
   lat: 35.68950,
@@ -50,6 +50,17 @@ const mainPinMarker = L.marker( TokyoCoords,
 
 mainPinMarker.addTo(map);
 
+const setDefaultAddress = () => {
+  mainPinMarker.setLatLng(TokyoCoords);
+  map.setView(TokyoCoords, 10);
+};
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  setDefaultAddress();
+});
+
+
 const renderPins = (array) => {
   array.forEach((item) => {
     const pinMarker = L.marker(item.location, {
@@ -61,4 +72,4 @@ const renderPins = (array) => {
   });
 };
 
-renderPins(getArrayAds(10));
+export { renderPins };
