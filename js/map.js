@@ -1,7 +1,10 @@
 import { activatePage } from './page-state.js';
 import { renderOffer } from './card.js';
-
+import { getData } from './server.js';
+import { showAlert } from './util.js';
+import { adForm, mapFilters } from './page-state.js';
 const resetButton = document.querySelector('.ad-form__reset');
+const address = document.querySelector('#address');
 
 const TokyoCoords = {
   lat: 35.68950,
@@ -9,13 +12,13 @@ const TokyoCoords = {
 };
 
 const MAP_ZOOM = 10;
-
+const ADS_AMOUNT = 10;
 const MAIN_PIN_SIZE = [52, 52];
 const MAIN_ANCHOR = [26, 52];
 const SECONDARY_PIN_SIZE = [40, 40];
 const SECONDARY_ANCHOR = [20, 40];
-const tileLayerAdress = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -29,17 +32,42 @@ const secondaryPinIcon = L.icon({
   iconAnchor: SECONDARY_ANCHOR,
 });
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    activatePage();
-  })
-  .setView(TokyoCoords, MAP_ZOOM);
+const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
 
-L.tileLayer( tileLayerAdress,
+const renderPins = (array) => {
+  array.forEach((item) => {
+    const pinMarker = L.marker(item.location, {
+      icon: secondaryPinIcon,
+    });
+    pinMarker
+      .addTo(markerGroup)
+      .bindPopup(renderOffer(item));
+  });
+};
+
+const onDataLoad = (offers) => {
+  renderPins(offers.slice(0, ADS_AMOUNT));
+  mapFilters.addEventListener('reset', () => {
+    markerGroup.clearLayers();
+  });
+};
+
+const onDataError = () => {
+  showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+};
+
+map.on('load', () => {
+  activatePage();
+  getData(onDataLoad, onDataError);
+}).setView(TokyoCoords, MAP_ZOOM);
+
+L.tileLayer( LAYER,
   {
-    attribution: tileLayerAttribution,
+    attribution: LAYER_ATTRIBUTION,
   },
 ).addTo(map);
+
 
 const mainPinMarker = L.marker( TokyoCoords,
   {
@@ -50,26 +78,24 @@ const mainPinMarker = L.marker( TokyoCoords,
 
 mainPinMarker.addTo(map);
 
+mainPinMarker.on('moveend', (evt) => {
+  address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+});
+
 const setDefaultAddress = () => {
   mainPinMarker.setLatLng(TokyoCoords);
-  map.setView(TokyoCoords, 10);
+  map.setView(TokyoCoords, MAP_ZOOM);
+};
+
+const resetSettings = () => {
+  setDefaultAddress();
+  adForm.reset();
+  mapFilters.reset();
 };
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  setDefaultAddress();
+  resetSettings();
 });
 
 
-const renderPins = (array) => {
-  array.forEach((item) => {
-    const pinMarker = L.marker(item.location, {
-      icon: secondaryPinIcon,
-    });
-    pinMarker
-      .addTo(map)
-      .bindPopup(renderOffer(item));
-  });
-};
-
-export { renderPins };

@@ -1,28 +1,31 @@
-const URL_POST = 'https://23.javascript.pages.academy/keksobooking';
-const URL_GET = 'https://23.javascript.pages.academy/keksobooking/data';
+const API_URL = 'https://23.javascript.pages.academy/keksobooking';
 
-const getData = (onSuccess) => {
-  fetch(URL_GET)
+const getData = (onSuccess, onFail) => {
+  fetch(`${API_URL}/data`)
     .then((response) => response.json())
     .then((offers) => {
       onSuccess(offers);
+    })
+    .catch(() => {
+      onFail();
     });
 };
 
 const sendData= (onSuccess, onFail, body) => {
   fetch(
-    URL_POST,
+    API_URL,
     {
       method: 'POST',
       body,
     },
-  ).then((response) => {
-    if (response.ok) {
-      onSuccess();
-    } else {
-      onFail();
-    }
-  })
+  )
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onFail();
+      }
+    })
     .catch(() => {
       onFail();
     });
