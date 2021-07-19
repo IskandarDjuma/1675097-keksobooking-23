@@ -3,22 +3,10 @@ import { renderOffer } from './card.js';
 import { getData } from './server.js';
 import { showAlert } from './util.js';
 import { adForm, mapFilters } from './page-state.js';
+import { TokyoCoords, MAP_ZOOM, ADS_AMOUNT, MAIN_PIN_SIZE, MAIN_ANCHOR, SECONDARY_PIN_SIZE, SECONDARY_ANCHOR, LAYER, LAYER_ATTRIBUTION } from './data.js';
+
 const resetButton = document.querySelector('.ad-form__reset');
 const address = document.querySelector('#address');
-
-const TokyoCoords = {
-  lat: 35.68950,
-  lng: 139.69171,
-};
-
-const MAP_ZOOM = 10;
-const ADS_AMOUNT = 10;
-const MAIN_PIN_SIZE = [52, 52];
-const MAIN_ANCHOR = [26, 52];
-const SECONDARY_PIN_SIZE = [40, 40];
-const SECONDARY_ANCHOR = [20, 40];
-const LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -98,4 +86,4 @@ resetButton.addEventListener('click', (evt) => {
   resetSettings();
 });
 
-
+export { resetSettings };

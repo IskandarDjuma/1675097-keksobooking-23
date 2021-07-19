@@ -1,4 +1,4 @@
-const API_URL = 'https://23.javascript.pages.academy/keksobooking';
+import { API_URL } from './data.js';
 
 const getData = (onSuccess, onFail) => {
   fetch(`${API_URL}/data`)
