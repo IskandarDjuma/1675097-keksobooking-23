@@ -21,4 +21,4 @@ const activatePage = () => {
   toggleFields(false);
 };
 
-export { activatePage, deactivatePage };
+export { activatePage, deactivatePage, adForm, mapFilters };

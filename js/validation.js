@@ -1,4 +1,7 @@
 import { HOUSING_TYPES } from './data.js';
+import { sendData } from './server.js';
+import { showErrorMessage, showSuccessMessage } from './popup.js';
+import { MIN_TITLE, MAX_TITLE, roomGuestRation } from './data.js';
 
 const adForm = document.querySelector('.ad-form');
 const titleFormOffer = adForm.querySelector('#title');
@@ -8,17 +11,6 @@ const capacitySelect = adForm.querySelector('#capacity');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const propertyType = adForm.querySelector('#type');
-
-
-const MIN_TITLE = 30;
-const MAX_TITLE = 100;
-
-const roomGuestRation = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0],
-};
 
 const onTitleChange = () => {
   if (titleFormOffer.validity.tooShort) {
@@ -72,4 +64,9 @@ const setFormListeners = () => {
   timeOut.addEventListener('change', onTimeOutChange);
 };
 
-export { setFormListeners };
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData(showSuccessMessage, showErrorMessage, new FormData(evt.target));
+});
+
+setFormListeners();

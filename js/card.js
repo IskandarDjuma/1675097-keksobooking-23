@@ -45,20 +45,27 @@ const renderOffer = ({author, offer}) => {
   const photosBlock = cardElement.querySelector('.popup__photos');
 
   cardElement.querySelector('.popup__title').textContent = title;
+  cardElement.querySelector('.popup__avatar').src = author.avatar;
   cardElement.querySelector('.popup__text--address').textContent = address;
   cardElement.querySelector('.popup__text--price').textContent= `${price} ₽/ночь`;
   cardElement.querySelector('.popup__type').textContent = HOUSING_TYPES[type].name;
+  cardElement.querySelector('.popup__description').textContent = description;
   cardElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${declOfNum(rooms, ['комната', 'комнаты', 'комнат'])} для ${guests} ${declOfNum(guests, ['гостя', 'гостей', 'гостей'])}`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  createAdFeatures(featuresBlock, features);
-  cardElement.querySelector('.popup__description').textContent = description;
-  createAdPhotos(photosBlock, photos);
-  cardElement.querySelector('.popup__avatar').src = author.avatar;
+
+  if (features && features.length > 0) {
+    createAdFeatures(featuresBlock, features);
+  } else {
+    featuresBlock.remove();
+  }
+
+  if (photos && photos.length > 0) {
+    createAdPhotos(photosBlock, photos);
+  } else {
+    photosBlock.remove();
+  }
 
   return cardElement;
-
 };
 
 export { renderOffer, declOfNum };
-
-
