@@ -3,6 +3,7 @@ import { renderOffer } from './card.js';
 import { getData } from './server.js';
 import { showAlert } from './util.js';
 import { adForm, mapFilters } from './page-state.js';
+import { setFilterListeners } from './filter.js';
 import { TokyoCoords, MAP_ZOOM, ADS_AMOUNT, MAIN_PIN_SIZE, MAIN_ANCHOR, SECONDARY_PIN_SIZE, SECONDARY_ANCHOR, LAYER, LAYER_ATTRIBUTION } from './data.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
@@ -34,21 +35,26 @@ const renderPins = (array) => {
   });
 };
 
+const clearMarkers =  mapFilters.addEventListener('reset', () => {
+  markerGroup.clearLayers();
+});
+
 const onDataLoad = (offers) => {
   renderPins(offers.slice(0, ADS_AMOUNT));
-  mapFilters.addEventListener('reset', () => {
-    markerGroup.clearLayers();
-  });
+  setFilterListeners(offers);
 };
 
 const onDataError = () => {
   showAlert('Не удалось отправить форму. Попробуйте ещё раз');
 };
 
-map.on('load', () => {
-  activatePage();
-  getData(onDataLoad, onDataError);
-}).setView(TokyoCoords, MAP_ZOOM);
+const mapLoad = () => {
+  map.on('load', () => {
+    activatePage();
+    getData(onDataLoad, onDataError);
+  }).setView(TokyoCoords, MAP_ZOOM);
+};
+
 
 L.tileLayer( LAYER,
   {
@@ -86,4 +92,4 @@ resetButton.addEventListener('click', (evt) => {
   resetSettings();
 });
 
-export { resetSettings };
+export { resetSettings, renderPins, clearMarkers, mapLoad };
