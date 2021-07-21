@@ -1,7 +1,7 @@
-import './validation.js';
+import { setFormListeners } from './validation.js';
 import { mapLoad } from './map.js';
-import './server.js';
 import { deactivatePage } from './page-state.js';
 
 deactivatePage();
+setFormListeners();
 mapLoad();

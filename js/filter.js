@@ -1,11 +1,13 @@
 import { mapFilters } from './page-state.js';
 import { renderPins, clearMarkers } from './map.js';
+import { ADS_AMOUNT } from './data.js';
+import { debounce } from './utils/debounce.js';
 
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
-const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
+
 
 const PRICE_MAP = {
   low: {
@@ -22,44 +24,45 @@ const PRICE_MAP = {
   },
 };
 
-const filterByType = (offers) => {
-  housingType.value === offers.offer.type || 'any' === housingType.value  ;
+const filterByType = ({offer}) => 'any' === housingType.value || housingType.value === offer.type;
+
+
+const filterByPrice = ({offer}) => {
+  (PRICE_MAP[housingPrice.value]);
+  return 'any' === housingPrice.value
+    || PRICE_MAP[housingPrice.value].min < offer.price && PRICE_MAP[housingPrice.value].max > offer.price;
 };
 
-const filterByPrice = (offers) => {
-  PRICE_MAP[housingPrice.value].min < offers.offer.price && PRICE_MAP[housingPrice.value].max > offers.offer.price;
+const filterByRooms = ({offer}) => 'any' === housingRooms.value  || Number(housingRooms.value) === offer.rooms;
+
+const filterByGuests = ({offer}) => 'any' ===  housingGuests.value || Number(housingGuests.value) === offer.guests;
+
+const filterByFeatures = ({offer}) => {
+  if (!offer.features) {
+    return false;
+  }
+  const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
+  return Array.from(housingFeatures).every((element) => offer.features.includes(element.value));
 };
 
-const filterByRooms = (offers) => {
-  Number(housingRooms.value) === offers.offer.rooms || 'any' === housingRooms.value  ;
-};
-
-const filterByGuests = (offers) => {
-  Number(housingGuests.value) === offers.offer.guests  || 'any' ===  housingGuests.value;
-};
-
-const filterByFeatures = (item) => {
-  Array.from(housingFeatures).every((element) => {
-    item.offer.features.includes(element.value);
-  });
-};
-
-const filterOffers = (data) => {
-  data.filter(filterByType).
-    filter(filterByRooms).
-    filter(filterByPrice).
-    filter(filterByGuests).
-    filter(filterByFeatures);
-};
+const filterOffers = (data) => (
+  data
+    .filter((item) => filterByType(item)
+    && filterByPrice(item)
+    && filterByRooms(item)
+    && filterByGuests(item)
+    && filterByFeatures(item))
+    .slice(0, ADS_AMOUNT)
+);
 
 const updateOffers = (data) => {
-  clearMarkers;
+  clearMarkers();
   const filteredOffers = filterOffers(data);
   renderPins(filteredOffers);
 };
 
 const setFilterListeners = (offers) => {
-  mapFilters.addEventListener('change', () => updateOffers(offers));
+  mapFilters.addEventListener('change', debounce(() => updateOffers(offers)));
 };
 
 export { setFilterListeners };

@@ -36,7 +36,7 @@ const TokyoCoords = {
   lng: 139.69171,
 };
 
-const MAP_ZOOM = 10;
+const MAP_ZOOM = 12;
 const ADS_AMOUNT = 10;
 const MAIN_PIN_SIZE = [52, 52];
 const MAIN_ANCHOR = [26, 52];
