@@ -2,6 +2,7 @@ import { HOUSING_TYPES } from './data.js';
 import { sendData } from './server.js';
 import { showErrorMessage, showSuccessMessage } from './popup.js';
 import { MIN_TITLE, MAX_TITLE, roomGuestRation } from './data.js';
+import { resetSettings, renderPins } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const titleFormOffer = adForm.querySelector('#title');
@@ -11,6 +12,7 @@ const capacitySelect = adForm.querySelector('#capacity');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const propertyType = adForm.querySelector('#type');
+const resetButton = document.querySelector('.ad-form__reset');
 
 const onTitleChange = () => {
   if (titleFormOffer.validity.tooShort) {
@@ -48,25 +50,36 @@ const onTimeInChange = (evt) => { timeOut.value = evt.target.value; };
 
 const onTimeOutChange = (evt) => { timeIn.value = evt.target.value; };
 
-const priceChangeHandler = (evt) => {
+const onPropertyTypeChange = (evt) => {
   const minPrice = HOUSING_TYPES[evt.target.value].minPrice;
   priceFormOffer.min = minPrice;
   priceFormOffer.placeholder = minPrice;
 };
 
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  if (adForm.checkValidity()) {
+    sendData(showSuccessMessage, showErrorMessage, new FormData(evt.target));
+  }
+};
+
+const setResetListener = (data) => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetSettings();
+    renderPins(data);
+  });
+};
+
 const setFormListeners = () => {
   titleFormOffer.addEventListener('change', onTitleChange);
   priceFormOffer.addEventListener('change', onPriceChange);
-  propertyType.addEventListener('change', priceChangeHandler);
+  propertyType.addEventListener('change', onPropertyTypeChange);
   roomNumberSelect.addEventListener('change', () => checkPlaceValidity());
   capacitySelect.addEventListener('change', () => checkPlaceValidity());
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
+  adForm.addEventListener('submit', onFormSubmit);
 };
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  sendData(showSuccessMessage, showErrorMessage, new FormData(evt.target));
-});
-
-setFormListeners();
+export { setResetListener, setFormListeners };

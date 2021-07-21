@@ -3,10 +3,13 @@ import { renderOffer } from './card.js';
 import { getData } from './server.js';
 import { showAlert } from './util.js';
 import { adForm, mapFilters } from './page-state.js';
+import { setFilterListeners } from './filter.js';
+import { setResetListener } from './validation.js';
 import { TokyoCoords, MAP_ZOOM, ADS_AMOUNT, MAIN_PIN_SIZE, MAIN_ANCHOR, SECONDARY_PIN_SIZE, SECONDARY_ANCHOR, LAYER, LAYER_ATTRIBUTION } from './data.js';
 
-const resetButton = document.querySelector('.ad-form__reset');
+
 const address = document.querySelector('#address');
+const floatdNumber = 5;
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -34,28 +37,17 @@ const renderPins = (array) => {
   });
 };
 
+const clearMarkers = () => markerGroup.clearLayers();
+
 const onDataLoad = (offers) => {
   renderPins(offers.slice(0, ADS_AMOUNT));
-  mapFilters.addEventListener('reset', () => {
-    markerGroup.clearLayers();
-  });
+  setFilterListeners(offers);
+  setResetListener(offers.slice(0, ADS_AMOUNT));
 };
 
 const onDataError = () => {
   showAlert('Не удалось отправить форму. Попробуйте ещё раз');
 };
-
-map.on('load', () => {
-  activatePage();
-  getData(onDataLoad, onDataError);
-}).setView(TokyoCoords, MAP_ZOOM);
-
-L.tileLayer( LAYER,
-  {
-    attribution: LAYER_ATTRIBUTION,
-  },
-).addTo(map);
-
 
 const mainPinMarker = L.marker( TokyoCoords,
   {
@@ -66,8 +58,9 @@ const mainPinMarker = L.marker( TokyoCoords,
 
 mainPinMarker.addTo(map);
 
-mainPinMarker.on('moveend', (evt) => {
-  address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+mainPinMarker.on('move', (evt) => {
+  const coords = evt.target.getLatLng();
+  address.value = `${coords.lat.toFixed(floatdNumber)}, ${coords.lng.toFixed(floatdNumber)}`;
 });
 
 const setDefaultAddress = () => {
@@ -76,14 +69,24 @@ const setDefaultAddress = () => {
 };
 
 const resetSettings = () => {
-  setDefaultAddress();
   adForm.reset();
+  setDefaultAddress();
   mapFilters.reset();
 };
 
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetSettings();
-});
+const mapLoad = () => {
+  map.on('load', () => {
+    activatePage();
+    setDefaultAddress();
+    getData(onDataLoad, onDataError);
+  }).setView(TokyoCoords, MAP_ZOOM);
+};
 
-export { resetSettings };
+
+L.tileLayer( LAYER,
+  {
+    attribution: LAYER_ATTRIBUTION,
+  },
+).addTo(map);
+
+export { resetSettings, renderPins, clearMarkers, mapLoad };
