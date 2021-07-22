@@ -1,7 +1,7 @@
 import { mapFilters } from './page-state.js';
 import { renderPins, clearMarkers } from './map.js';
 import { ADS_AMOUNT } from './data.js';
-import { debounce } from './utils/debounce.js';
+import { debounce } from './debounce.js';
 
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');

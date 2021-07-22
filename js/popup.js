@@ -1,10 +1,11 @@
 import { resetSettings } from './map.js';
 
+const ESC_KEY = 'Escape';
+
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorButton = errorTemplate.querySelector('.error__button');
 
-const ESC_KEY = 27;
 let closeMessage = null;
 
 const onDocumentClick = () => {
@@ -21,9 +22,9 @@ const showSuccessMessage = () => {
   const successMessage = successTemplate.cloneNode(true);
   document.body.appendChild(successMessage);
   resetSettings();
+  document.addEventListener('keydown', onDocumentKeydown);
   document.addEventListener('click', onDocumentClick);
   errorButton.addEventListener('click', onDocumentClick);
-  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const showErrorMessage = (message) => {
@@ -33,9 +34,9 @@ const showErrorMessage = (message) => {
     textMessage.textContent = message;
   }
   document.body.appendChild(errorMessage);
+  document.addEventListener('keydown', onDocumentKeydown);
   const errorBlock = document.querySelector('.error');
   errorBlock.addEventListener('click', onDocumentClick);
-  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 closeMessage = () => {
@@ -50,8 +51,8 @@ closeMessage = () => {
     errorMessagePopup.remove();
   }
 
-  document.removeEventListener('click', onDocumentClick);
   document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onDocumentClick);
 };
 
 export { showErrorMessage, showSuccessMessage };

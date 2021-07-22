@@ -9,7 +9,7 @@ import { TokyoCoords, MAP_ZOOM, ADS_AMOUNT, MAIN_PIN_SIZE, MAIN_ANCHOR, SECONDAR
 
 
 const address = document.querySelector('#address');
-const floatdNumber = 5;
+const floatNumber = 5;
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -60,7 +60,7 @@ mainPinMarker.addTo(map);
 
 mainPinMarker.on('move', (evt) => {
   const coords = evt.target.getLatLng();
-  address.value = `${coords.lat.toFixed(floatdNumber)}, ${coords.lng.toFixed(floatdNumber)}`;
+  address.value = `${coords.lat.toFixed(floatNumber )}, ${coords.lng.toFixed(floatNumber)}`;
 });
 
 const setDefaultAddress = () => {
